@@ -65,6 +65,14 @@ public class MovieService {
         return movieRepository.findMovieByCategories(List.of(Category.builder().id(categoryId).build()));
     }
 
+    public List<Movie> findTop3() {
+        return movieRepository.findTop3ByOrderByRatingDesc();
+    }
+
+    public void delete(Long id) {
+        movieRepository.deleteById(id);
+    }
+
 
 
     private List<Category> findCategories(List<Category> categories) {

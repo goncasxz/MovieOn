@@ -6,10 +6,12 @@ import br.com.movieon.entity.Movie;
 import br.com.movieon.mapper.MovieMapper;
 import br.com.movieon.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/movieon/movie")
@@ -47,12 +49,28 @@ public class MovieController {
     }
 
 
-
     @GetMapping("/search")
     public ResponseEntity<List<MovieResponse>> findByCategory(@RequestParam Long category) {
         return ResponseEntity.ok(movieService.findByCategory(category)
                 .stream()
                 .map(MovieMapper::toMovieResponse)
                 .toList());
+    }
+
+    @GetMapping("/top")
+    public ResponseEntity<List<MovieResponse>> findTop3() {
+        return ResponseEntity.ok(movieService.findTop3().stream()
+                .map(MovieMapper::toMovieResponse)
+                .toList());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        Optional<Movie> byId = movieService.findById(id);
+        if (byId.isPresent()) {
+            movieService.delete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
