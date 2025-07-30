@@ -14,3 +14,7 @@ spring:
 
   flyway:
     enabled: true
+
+movieon:
+  security:
+    secret: "${JWT_SECRET}"
