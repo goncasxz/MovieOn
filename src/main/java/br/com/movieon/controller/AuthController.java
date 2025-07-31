@@ -38,6 +38,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserResponse(savedUser));
     }
 
+    /*IRA FAZER A VALIDACAO DO EMAIL(username) E PASSWORD PASSADOS ATRAVES DO USERDETAILSSERVICE*/
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(request.email(), request.password());

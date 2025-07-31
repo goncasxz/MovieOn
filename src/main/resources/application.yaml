@@ -18,3 +18,8 @@ spring:
 movieon:
   security:
     secret: "${JWT_SECRET}"
+
+logging:
+    level:
+      org.springframework.security.web.FilterChainProxy: DEBUG
+      org.springframework.security: DEBUG
