@@ -6,12 +6,14 @@ import br.com.movieon.controller.request.UserRequest;
 import br.com.movieon.controller.response.LoginResponse;
 import br.com.movieon.controller.response.UserResponse;
 import br.com.movieon.entity.User;
+import br.com.movieon.exception.UsernameOrPasswordInvalidException;
 import br.com.movieon.mapper.UserMapper;
 import br.com.movieon.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +43,7 @@ public class AuthController {
     /*IRA FAZER A VALIDACAO DO EMAIL(username) E PASSWORD PASSADOS ATRAVES DO USERDETAILSSERVICE*/
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        try {
         UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(request.email(), request.password());
         Authentication authenticate = authenticationManager.authenticate(userAndPass);
 
@@ -49,5 +52,10 @@ public class AuthController {
         String token = tokenService.generateToken(user);
 
         return ResponseEntity.ok(new LoginResponse(token));
+
+        } catch (BadCredentialsException e) {
+            throw new UsernameOrPasswordInvalidException("Usuário ou senha inválido");
+        }
+
     }
 }

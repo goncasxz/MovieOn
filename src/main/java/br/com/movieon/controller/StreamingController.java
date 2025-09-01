@@ -5,6 +5,7 @@ import br.com.movieon.controller.response.StreamingResponse;
 import br.com.movieon.entity.Streaming;
 import br.com.movieon.mapper.StreamingMapper;
 import br.com.movieon.service.StreamingService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class StreamingController {
     }
 
     @PostMapping
-    public ResponseEntity<StreamingResponse> saveStreaming(@RequestBody StreamingRequest request) {
+    public ResponseEntity<StreamingResponse> saveStreaming(@Valid @RequestBody StreamingRequest request) {
         Streaming savedStreaming = streamingService.save(StreamingMapper.toStreaming(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(StreamingMapper.toStreamingResponse(savedStreaming));
     }
